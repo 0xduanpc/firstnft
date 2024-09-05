@@ -152,10 +152,10 @@ contract NFT is Ownable, ERC721Enumerable {
     function withdraw(uint id) public returns (bool) {
         require(id < stakeMap[msg.sender].length, "wrong id");
         require(!stakeMap[msg.sender][id].withdrawed, "already withdrawed");
-        StakeInfo memory stakeInfo = stakeMap[msg.sender][id];
+        StakeInfo storage stakeInfo = stakeMap[msg.sender][id];
         uint usdc_returns = stakeInfo.usdc_amount;
         uint eth_returns = stakeInfo.eth_amount;
-        stakeMap[msg.sender][id].withdrawed = true;
+        stakeInfo.withdrawed = true;
         // 锁50%，后面线性释放
         if (block.timestamp - stakeInfo.startTime < releaseTime[stakeInfo.lv]) {
             usdc_returns =

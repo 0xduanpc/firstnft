@@ -155,6 +155,7 @@ contract NFT is Ownable, ERC721Enumerable {
         StakeInfo storage stakeInfo = stakeMap[msg.sender][id];
         uint usdc_returns = stakeInfo.usdc_amount;
         uint eth_returns = stakeInfo.eth_amount;
+        // 先标记为已取出，避免重入攻击
         stakeInfo.withdrawed = true;
         // 锁50%，后面线性释放
         if (block.timestamp - stakeInfo.startTime < releaseTime[stakeInfo.lv]) {
